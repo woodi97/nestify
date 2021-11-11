@@ -22,7 +22,7 @@ export class MoviesService {
 
   deleteOne(id: number) {
     this.getOne(id);
-    this.movies.filter((movie) => movie.id !== id);
+    this.movies = this.movies.filter((movie) => movie.id !== id);
   }
 
   create(movie: CreateMovieDto) {
