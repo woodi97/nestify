@@ -20,21 +20,23 @@ export class MoviesService {
     return movie;
   }
 
-  deleteOne(id: number) {
-    this.getOne(id);
-    this.movies = this.movies.filter((movie) => movie.id !== id);
-  }
-
   create(movie: CreateMovieDto) {
     this.movies.push({
       id: this.movies.length + 1,
       ...movie,
     });
+    return this.movies[this.movies.length - 1];
+  }
+
+  deleteOne(id: number) {
+    this.getOne(id);
+    this.movies = this.movies.filter((movie) => movie.id !== id);
   }
 
   update(id: number, updateData: UpdateMovieDto) {
     const movie = this.getOne(id);
     this.deleteOne(id);
     this.movies.push({ ...movie, ...updateData });
+    return true;
   }
 }

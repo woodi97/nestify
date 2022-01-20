@@ -1,10 +1,15 @@
 import { Module } from '@nestjs/common';
-import { MoviesModule } from './movies/movies.module';
-import { AppController } from './app.controller';
+import { ConfigModule } from '@nestjs/config';
+
+import { MoviesModule } from './modules/movies/movies.module';
 
 @Module({
-  imports: [MoviesModule],
-  controllers: [AppController],
-  providers: [],
+  imports: [
+    MoviesModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: process.env.NODE_ENV === 'test' ? '.test.env' : '.env',
+    }),
+  ],
 })
 export class AppModule {}
