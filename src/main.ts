@@ -22,7 +22,7 @@ export async function bootstrap(): Promise<NestExpressApplication> {
   );
   // app.enable('trust proxy'); // only if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
   app.use(helmet());
-  app.setGlobalPrefix('/api/v1');
+  app.setGlobalPrefix(process.env.API_PREFIX ?? '/api');
   app.use(
     RateLimit({
       windowMs: 15 * 60 * 1000, // 15 minutes
