@@ -3,8 +3,8 @@ import { MoviesController } from './movies.controller';
 import { MoviesService } from './movies.service';
 
 @Module({
-  // NestJs Automatically Inject provider to controller
   controllers: [MoviesController],
+  exports: [MoviesService],
   providers: [MoviesService],
 })
 export class MoviesModule {}

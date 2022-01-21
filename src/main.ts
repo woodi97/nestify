@@ -1,19 +1,61 @@
-import { ValidationPipe } from '@nestjs/common';
+import {
+  HttpStatus,
+  UnprocessableEntityException,
+  ValidationPipe,
+} from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import type { NestExpressApplication } from '@nestjs/platform-express';
+import { ExpressAdapter } from '@nestjs/platform-express';
+import compression from 'compression';
+import { middleware as expressCtx } from 'express-ctx';
+import RateLimit from 'express-rate-limit';
+import helmet from 'helmet';
+import morgan from 'morgan';
+
 import { AppModule } from './app.module';
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(
-    new ValidationPipe({
-      // if non-meaning parameters reaches, just ignore it
-      whitelist: true,
-      // if non-meaning parameters reaches, raising error
-      forbidNonWhitelisted: true,
-      // automatically transform to actual type(Ex: string -> number)
-      transform: true,
+export async function bootstrap(): Promise<NestExpressApplication> {
+  const app = await NestFactory.create<NestExpressApplication>(
+    AppModule,
+    new ExpressAdapter(),
+    { cors: true },
+  );
+  // app.enable('trust proxy'); // only if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
+  app.use(helmet());
+  app.setGlobalPrefix('/api/v1');
+  app.use(
+    RateLimit({
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 100, // limit each IP to 100 requests per windowMs
     }),
   );
-  await app.listen(3000);
+  app.use(compression());
+  app.use(morgan('combined'));
+  app.enableVersioning();
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+      transform: true,
+      dismissDefaultMessages: true,
+      exceptionFactory: (errors) => new UnprocessableEntityException(errors),
+    }),
+  );
+
+  app.use(expressCtx);
+
+  // Starts listening for shutdown hooks
+  if (process.env.NODE_ENV !== 'development') {
+    app.enableShutdownHooks();
+  }
+
+  const port = 3000;
+  await app.listen(port);
+
+  console.info(`server running on port ${port}`);
+
+  return app;
 }
-bootstrap();
+
+void bootstrap();
