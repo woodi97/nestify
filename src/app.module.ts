@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-// import { MongooseModule } from '@nestjs/mongoose';
 
-import { MoviesModule } from './modules/movies/movies.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { BoardsModule } from './modules/boards/boards.module';
+// import { MongooseModule } from '@nestjs/mongoose';
+import { MoviesModule } from './modules/movies/movies.module';
 
 @Module({
   imports: [

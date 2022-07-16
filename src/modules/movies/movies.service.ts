@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateMovieDto } from './dto/create-movie.dto';
-import { UpdateMovieDto } from './dto/update-movie.dto';
-import { IMovie } from './entities/movie.entity';
+
+import type { CreateMovieDto } from './dto/create-movie.dto';
+import type { UpdateMovieDto } from './dto/update-movie.dto';
+import type { IMovie } from './entities/movie.entity';
 
 // Dependency Injection Decorator
 @Injectable()
@@ -13,10 +14,12 @@ export class MoviesService {
   }
 
   getOne(id: number): IMovie {
-    const movie = this.movies.find((movie) => movie.id === id);
+    const movie = this.movies.find((mov) => mov.id === id);
+
     if (!movie) {
       throw new NotFoundException(`Movie with ID ${id} Not Found`);
     }
+
     return movie;
   }
 
@@ -25,6 +28,7 @@ export class MoviesService {
       id: this.movies.length + 1,
       ...movie,
     });
+
     return this.movies[this.movies.length - 1];
   }
 
@@ -37,6 +41,7 @@ export class MoviesService {
     const movie = this.getOne(id);
     this.deleteOne(id);
     this.movies.push({ ...movie, ...updateData });
+
     return true;
   }
 }

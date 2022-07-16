@@ -1,5 +1,7 @@
 import { NotFoundException } from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
+import type { TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
+
 import { MoviesService } from './movies.service';
 
 describe('MoviesService', () => {
@@ -45,9 +47,9 @@ describe('MoviesService', () => {
     it('should throw 404 error', () => {
       try {
         service.getOne(999);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
-        expect(e.message).toEqual(`Movie with ID 999 Not Found`);
+      } catch (error) {
+        expect(error).toBeInstanceOf(NotFoundException);
+        expect(error.message).toEqual('Movie with ID 999 Not Found');
       }
     });
   });
@@ -67,8 +69,8 @@ describe('MoviesService', () => {
     it('should return a 404', () => {
       try {
         service.deleteOne(999);
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (error) {
+        expect(error).toBeInstanceOf(NotFoundException);
       }
     });
   });
@@ -102,8 +104,8 @@ describe('MoviesService', () => {
     it('should return a NotFoundException', () => {
       try {
         service.update(999, { title: 'Updated Movie' });
-      } catch (e) {
-        expect(e).toBeInstanceOf(NotFoundException);
+      } catch (error) {
+        expect(error).toBeInstanceOf(NotFoundException);
       }
     });
   });
