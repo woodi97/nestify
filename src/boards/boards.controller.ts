@@ -12,40 +12,40 @@ import {
 
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/create-board.dto';
-import { BoardStatus, IBoard } from './interface/board.model';
+import { BoardStatus, IBoard } from './interface/boards.model';
 import { BoardStatusValidationPipe } from './pipes/board-status-validation.pipe';
 
 @Controller('boards')
 export class BoardsController {
-  // automatic init even write like this
-  constructor(private boardsService: BoardsService) {}
+  // automatic init
+  constructor(private boardService: BoardsService) {}
 
   @Get('/')
   getAllBoards(): IBoard[] {
-    return this.boardsService.getAllBoards();
+    return this.boardService.getAllBoards();
   }
 
   @Get('/:id')
   getBoard(@Param('id') id: string) {
-    return this.boardsService.getBoardByID(id);
+    return this.boardService.getBoardByID(id);
   }
 
   @Post('/')
   @UsePipes(ValidationPipe)
   createBoard(@Body() createBoardDto: CreateBoardDto): IBoard {
-    return this.boardsService.createBoard(createBoardDto);
+    return this.boardService.createBoard(createBoardDto);
   }
 
   @Patch('/:id/status')
   updateBoardStatus(
     @Param('id') id: string,
     @Body('status', BoardStatusValidationPipe) status: BoardStatus,
-  ): IBoard {
-    return this.boardsService.updateBoardStatus(id, status);
+  ) {
+    return this.boardService.updateBoardStatus(id, status);
   }
 
   @Delete('/:id')
   deleteBoard(@Param('id') id: string) {
-    return this.boardsService.deleteBoard(id);
+    return this.boardService.deleteBoard(id);
   }
 }
