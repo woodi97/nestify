@@ -22,18 +22,18 @@ export class BoardsController {
   constructor(private boardService: BoardsService) {}
 
   @Get('/')
-  async getAllBoards(): Promise<BoardEntity[]> {
+  getAllBoards(): Promise<BoardEntity[]> {
     return this.boardService.getAllBoards();
   }
 
   @Get('/:id')
-  async getBoard(@Param('id') id: string) {
+  getBoard(@Param('id') id: string) {
     return this.boardService.getBoardByID(id);
   }
 
   @Post('/')
   @UsePipes(ValidationPipe)
-  async createBoard(@Body() createBoardDto: CreateBoardDto): Promise<BoardEntity> {
+  createBoard(@Body() createBoardDto: CreateBoardDto): Promise<BoardEntity> {
     return this.boardService.createBoard(createBoardDto);
   }
 

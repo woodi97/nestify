@@ -1,5 +1,7 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+import { BoardStatus } from './board-status.enum';
+
 @Entity('boards')
 export class BoardEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -11,6 +13,10 @@ export class BoardEntity extends BaseEntity {
   @Column()
   description: string;
 
-  @Column()
-  status: string;
+  @Column({
+    type: 'enum',
+    enum: BoardStatus,
+    default: BoardStatus.PUBLIC,
+  })
+  status: BoardStatus;
 }

@@ -13,8 +13,9 @@ import { typeOrmConfig } from './configs/typeorm.config';
       envFilePath: process.env.NODE_ENV === 'development' ? '.env.development' : '.env.production',
     }),
     TypeOrmModule.forRoot(typeOrmConfig),
-    AuthModule,
     BoardsModule,
+    AuthModule,
   ],
+  controllers: [],
 })
 export class AppModule {}
