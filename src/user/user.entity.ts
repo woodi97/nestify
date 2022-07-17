@@ -1,4 +1,7 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from 'typeorm';
+
+// eslint-disable-next-line import/no-cycle
+import { BoardEntity } from '../boards/board.entity';
 
 @Entity('user')
 @Unique(['email'])
@@ -14,4 +17,7 @@ export class UserEntity extends BaseEntity {
 
   @Column()
   password: string;
+
+  @OneToMany(() => BoardEntity, (board) => board.user, { eager: true })
+  boards: BoardEntity[];
 }

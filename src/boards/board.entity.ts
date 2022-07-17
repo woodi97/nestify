@@ -1,8 +1,10 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
+// eslint-disable-next-line import/no-cycle
+import { UserEntity } from '../user/user.entity';
 import { BoardStatus } from './board-status.enum';
 
-@Entity('boards')
+@Entity('board')
 export class BoardEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -19,4 +21,7 @@ export class BoardEntity extends BaseEntity {
     default: BoardStatus.PUBLIC,
   })
   status: BoardStatus;
+
+  @ManyToOne(() => UserEntity, (user) => user.boards, { eager: false })
+  user: UserEntity;
 }
