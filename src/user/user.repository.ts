@@ -1,4 +1,5 @@
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { ConflictException, UnauthorizedException } from '@nestjs/common';
+import { compare, genSalt, hash } from 'bcryptjs';
 import { EntityRepository, Repository } from 'typeorm';
 
 import type { AuthCredentialDto } from '../auth/dto/auth-credential.dto';
@@ -7,43 +8,32 @@ import { UserEntity } from './user.entity';
 
 @EntityRepository(UserEntity)
 export class UserRepository extends Repository<UserEntity> {
-  async createUser(authCredentialsDto: AuthCredentialDto): Promise<UserEntity> {
-    const found = await this.findOne({ email: authCredentialsDto.email });
+  async createUser(authCredentialsDto: AuthCredentialDto): Promise<void> {
+    const { username, email, password } = authCredentialsDto;
 
-    if (found) {
-      throw new BadRequestException(`User with email ${authCredentialsDto.email} already exists`);
-    }
+    const salt = await genSalt();
+    const hashedPassword = await hash(password, salt);
 
     const user = this.create({
-      ...authCredentialsDto,
+      username,
+      email,
+      password: hashedPassword,
     });
 
-    await this.save(user);
-
-    return user;
+    try {
+      await this.save(user);
+    } catch (error) {
+      throw error.code === '23505' ? new ConflictException('Email already exists') : error;
+    }
   }
 
-  async findByEmail(email: string): Promise<UserEntity | undefined> {
-    return this.findOne({ email });
-  }
-
-  async findByUsername(username: string): Promise<UserEntity | undefined> {
-    return this.findOne({ username });
-  }
-
-  async validateUserPassword(signInAuthDto: SignInAuthDto): Promise<UserEntity | undefined> {
+  async validateUserPassword(signInAuthDto: SignInAuthDto): Promise<void> {
     const { email, password } = signInAuthDto;
 
     const result = await this.findOne({ email });
 
-    if (!result) {
-      throw new NotFoundException(`Can't find User with email ${email}`);
+    if (!(result && (await compare(password, result.password)))) {
+      throw new UnauthorizedException('Invalid credentials');
     }
-
-    if (result.password !== password) {
-      throw new NotFoundException(`Wrong password for User with email ${email}`);
-    }
-
-    return result;
   }
 }
