@@ -1,50 +1,36 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { v1 as uuid } from 'uuid';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 
+import type { BoardEntity } from './board.entity';
+import { BoardRepository } from './board.repository';
+import type { BoardStatus } from './board-status.enum';
 import type { CreateBoardDto } from './dto/create-board.dto';
-import type { IBoard } from './interface/boards.model';
-import { BoardStatus } from './interface/boards.model';
 
 @Injectable()
 export class BoardsService {
-  private boards: IBoard[] = [];
+  constructor(@InjectRepository(BoardRepository) private boardRepository: BoardRepository) {}
 
-  getAllBoards(): IBoard[] {
-    return this.boards;
-  }
-
-  getBoardByID(id: string): IBoard {
-    const result = this.boards.find((board) => board.id === id);
-
-    if (!result) {
-      throw new NotFoundException(`Can't find Board with id ${id}`);
-    }
+  getAllBoards(): Promise<BoardEntity[]> {
+    const result = this.boardRepository.getAllBoards();
 
     return result;
   }
 
-  createBoard(createBoardDto: CreateBoardDto): IBoard {
-    const board: IBoard = {
-      id: uuid(),
-      ...createBoardDto,
-      status: BoardStatus.PUBLIC,
-    };
-    this.boards.push(board);
-
-    return board;
-  }
-
-  updateBoardStatus(id: string, status: BoardStatus): IBoard {
-    const board = this.getBoardByID(id);
-    board.status = status;
-
-    return board;
-  }
-
-  deleteBoard(id: string): IBoard {
-    const result = this.getBoardByID(id);
-    this.boards = this.boards.filter((board) => board.id !== result.id);
+  getBoardByID(id: string): Promise<BoardEntity> {
+    const result = this.boardRepository.getBoardByID(id);
 
     return result;
+  }
+
+  createBoard(createBoardDto: CreateBoardDto): Promise<BoardEntity> {
+    return this.boardRepository.createBoard(createBoardDto);
+  }
+
+  updateBoardStatus(id: string, status: BoardStatus): Promise<BoardEntity> {
+    return this.boardRepository.updateBoardStatus(id, status);
+  }
+
+  deleteBoard(id: string): Promise<BoardEntity> {
+    return this.boardRepository.deleteBoard(id);
   }
 }
