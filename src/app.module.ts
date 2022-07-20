@@ -2,20 +2,24 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { AuthModule } from './auth/auth.module';
-import { BoardModule } from './boards/board.module';
-import { typeOrmConfig } from './configs/typeorm.config';
+import { AuthModule } from './modules/auth/auth.module';
+import { BoardModule } from './modules/boards/board.module';
+import { ApiConfigService } from './shared/services/api-config.service';
+import { SharedModule } from './shared/shared.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: process.env.NODE_ENV === 'development' ? '.env.development' : '.env.production',
-    }),
-    TypeOrmModule.forRoot(typeOrmConfig),
     BoardModule,
     AuthModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [SharedModule],
+      useFactory: (configService: ApiConfigService) => configService.postgresConfig,
+      inject: [ApiConfigService],
+    }),
   ],
-  controllers: [],
 })
 export class AppModule {}
