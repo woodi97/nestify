@@ -16,13 +16,14 @@ describe('AppController (e2e)', () => {
     app = moduleFixture.createNestApplication();
     app.useGlobalPipes(
       new ValidationPipe({
+        forbidUnknownValues: true,
         // if non-meaning parameters reaches, just ignore it
         whitelist: true,
         // if non-meaning parameters reaches, raising error
         forbidNonWhitelisted: true,
         // automatically transform to actual type(Ex: string -> number)
         transform: true,
-      }),
+      })
     );
     await app.init();
   });
