@@ -9,7 +9,9 @@ import type { CreateBoardDto } from './dto/create-board.dto';
 
 @Injectable()
 export class BoardService {
-  constructor(@InjectRepository(BoardRepository) private boardRepository: BoardRepository) {}
+  constructor(
+    @InjectRepository(BoardRepository) private boardRepository: BoardRepository
+  ) {}
 
   getAllBoards(user: UserEntity): Promise<BoardEntity[]> {
     return this.boardRepository.getAllBoards(user);
@@ -19,7 +21,10 @@ export class BoardService {
     return this.boardRepository.getBoardByID(id);
   }
 
-  createBoard(createBoardDto: CreateBoardDto, user: UserEntity): Promise<BoardEntity> {
+  createBoard(
+    createBoardDto: CreateBoardDto,
+    user: UserEntity
+  ): Promise<BoardEntity> {
     return this.boardRepository.createBoard(createBoardDto, user);
   }
 

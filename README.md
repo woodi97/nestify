@@ -12,3 +12,8 @@ NestJS Framework Boilerplate
    something.repository.ts에서 try catch로 개발자가 에러를 잡아서 처리할 수 있다)
 4. nest start --watch 명령어를 실행하면 hot reload가 된다. 하지만 이는 전체 파일에 대해서 hot reload이므로 프로젝트가 커질수록 시간이 오래걸린다. 따라서 webpack관련 설정을
    해줘야 한다 [참고](https://velog.io/@kys6879/Nest.JS-Hot-reload-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0)
+5. 루트 디렉토리에 orm.config가 있는 이유는 db migration때문이다. 만약 처음 해당 파일을 받았다면 database migration을 통해 자신의 db에 테이블 정보를 import해야한다. 만약
+   이게 싫다면 apiConfig파일에서 synchronize:true로 설정하면 되지만 이 경우 db변경이 생기면 이전데이터를 전부 날려?버린다
+6. SocketIO는 Gateway로 처리한다. Gateway는 Provider의 한 종류이며 Injectable들 앞에 위치한다
+    1. 웹 소켓 namespace를 정규표현식으로 하면 동적으로 방 이름을 생성할 수 있다
+    2. Events Module에서 provider에 Events Gateway를 넣어서 "단 한 번만" Events Gateway를 인스턴스화 해야하며, 이를 다른 모듈에서는 imports해서 사용한다

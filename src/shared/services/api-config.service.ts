@@ -34,7 +34,11 @@ export class ApiConfigService {
     let migrations = [__dirname + '/../../database/migrations/*{.ts,.js}'];
 
     if (module.hot) {
-      const entityContext = require.context('./../../modules', true, /\.entity\.ts$/);
+      const entityContext = require.context(
+        './../../modules',
+        true,
+        /\.entity\.ts$/
+      );
       entities = entityContext.keys().map((id) => {
         const entityModule = entityContext<Record<string, unknown>>(id);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -42,7 +46,11 @@ export class ApiConfigService {
 
         return entity as string;
       });
-      const migrationContext = require.context('./../../database/migrations', false, /\.ts$/);
+      const migrationContext = require.context(
+        './../../database/migrations',
+        false,
+        /\.ts$/
+      );
 
       migrations = migrationContext.keys().map((id) => {
         const migrationModule = migrationContext<Record<string, unknown>>(id);

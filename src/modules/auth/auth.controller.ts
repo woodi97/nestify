@@ -9,7 +9,12 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiAcceptedResponse, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiAcceptedResponse,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { UserEntity } from '../user/user.entity';
 import { AuthService } from './auth.service';
@@ -40,7 +45,9 @@ export class AuthController {
   @Post('/signup')
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse()
-  signUp(@Body(ValidationPipe) authCredentialsDto: AuthCredentialDto): Promise<void> {
+  signUp(
+    @Body(ValidationPipe) authCredentialsDto: AuthCredentialDto
+  ): Promise<void> {
     return this.authService.signUp(authCredentialsDto);
   }
 
@@ -49,7 +56,9 @@ export class AuthController {
   @ApiAcceptedResponse({
     type: AuthResponse,
   })
-  signIn(@Body(ValidationPipe) signInAuthDto: SignInAuthDto): Promise<{ accessToken: string }> {
+  signIn(
+    @Body(ValidationPipe) signInAuthDto: SignInAuthDto
+  ): Promise<{ accessToken: string }> {
     return this.authService.signIn(signInAuthDto);
   }
 }

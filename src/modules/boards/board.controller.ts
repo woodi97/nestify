@@ -13,7 +13,12 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiAcceptedResponse, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiAcceptedResponse,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { GetUser } from '../auth/get-user.decorator';
 import { UserEntity } from '../user/user.entity';
@@ -67,7 +72,10 @@ export class BoardController {
   @Delete('/:id')
   @HttpCode(HttpStatus.ACCEPTED)
   @ApiAcceptedResponse()
-  deleteBoard(@Param('id') id: string, @GetUser() user: UserEntity): Promise<void> {
+  deleteBoard(
+    @Param('id') id: string,
+    @GetUser() user: UserEntity
+  ): Promise<void> {
     return this.boardService.deleteBoard(id, user);
   }
 }

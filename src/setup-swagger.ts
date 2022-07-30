@@ -61,5 +61,7 @@ Routes is following REST standard (Richardson level 3)
     },
   });
 
-  console.info(`Documentation: http://localhost:${process.env.PORT}/documentation`);
+  console.info(
+    `Documentation: http://localhost:${process.env.PORT}/documentation`
+  );
 }

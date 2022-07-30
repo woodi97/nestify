@@ -21,7 +21,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload) {
     const { email } = payload;
-    const user: UserEntity | undefined = await this.userRepository.findOne({ email });
+    const user: UserEntity | undefined = await this.userRepository.findOne({
+      email,
+    });
 
     if (!user) {
       throw new UnauthorizedException("User doesn't exist");

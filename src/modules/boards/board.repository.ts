@@ -28,7 +28,10 @@ export class BoardRepository extends Repository<BoardEntity> {
     return found;
   }
 
-  async createBoard(createBoardDto: CreateBoardDto, user: UserEntity): Promise<BoardEntity> {
+  async createBoard(
+    createBoardDto: CreateBoardDto,
+    user: UserEntity
+  ): Promise<BoardEntity> {
     const newBoard: BoardEntity = this.create({
       ...createBoardDto,
       user,
@@ -39,7 +42,10 @@ export class BoardRepository extends Repository<BoardEntity> {
     return newBoard;
   }
 
-  async updateBoardStatus(id: string, status: BoardStatus): Promise<BoardEntity> {
+  async updateBoardStatus(
+    id: string,
+    status: BoardStatus
+  ): Promise<BoardEntity> {
     const board = await this.getBoardByID(id);
     board.status = status;
 

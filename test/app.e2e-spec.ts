@@ -23,7 +23,7 @@ describe('AppController (e2e)', () => {
         forbidNonWhitelisted: true,
         // automatically transform to actual type(Ex: string -> number)
         transform: true,
-      })
+      }),
     );
     await app.init();
   });

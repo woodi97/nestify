@@ -23,7 +23,9 @@ export class UserRepository extends Repository<UserEntity> {
     try {
       await this.save(user);
     } catch (error) {
-      throw error.code === '23505' ? new ConflictException('Email already exists') : error;
+      throw error.code === '23505'
+        ? new ConflictException('Email already exists')
+        : error;
     }
   }
 
