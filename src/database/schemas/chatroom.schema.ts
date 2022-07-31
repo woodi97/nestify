@@ -5,12 +5,6 @@ export type ChatroomDocument = Chatroom & Document;
 
 @Schema()
 export class Chatroom {
-  @Prop()
-  name: string;
-
-  @Prop()
-  title: string;
-
   @Prop({ required: true })
   roomId: string;
 

@@ -31,7 +31,11 @@ export class UserEntity extends BaseEntity {
   @OneToMany(() => BoardEntity, (board) => board.user, { eager: true })
   boards: BoardEntity[];
 
-  @OneToOne(() => ChatroomEntity)
+  @OneToOne(() => ChatroomEntity, {
+    nullable: true,
+    eager: true,
+    createForeignKeyConstraints: false,
+  })
   @JoinColumn({ name: 'chatroom_id' })
-  chatroom: ChatroomEntity;
+  chatroom!: ChatroomEntity | null;
 }

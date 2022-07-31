@@ -1,4 +1,12 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+
+import { UserEntity } from '../user/user.entity';
 
 @Entity('chatroom')
 export class ChatroomEntity extends BaseEntity {
@@ -6,8 +14,23 @@ export class ChatroomEntity extends BaseEntity {
   id: string;
 
   @Column()
-  title: string;
+  name: string;
 
   @Column()
-  description: string;
+  title: string;
+
+  @Column({
+    type: 'float8',
+  })
+  latitude: number;
+
+  @Column({
+    type: 'float8',
+  })
+  longitude: number;
+
+  @OneToOne(() => UserEntity, (user) => user.chatroom, {
+    createForeignKeyConstraints: false,
+  })
+  user: UserEntity;
 }
