@@ -10,7 +10,7 @@ import type { CreateBoardDto } from './dto/create-board.dto';
 @Injectable()
 export class BoardService {
   constructor(
-    @InjectRepository(BoardRepository) private boardRepository: BoardRepository
+    @InjectRepository(BoardRepository) private boardRepository: BoardRepository,
   ) {}
 
   getAllBoards(user: UserEntity): Promise<BoardEntity[]> {
@@ -23,7 +23,7 @@ export class BoardService {
 
   createBoard(
     createBoardDto: CreateBoardDto,
-    user: UserEntity
+    user: UserEntity,
   ): Promise<BoardEntity> {
     return this.boardRepository.createBoard(createBoardDto, user);
   }

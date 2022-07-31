@@ -46,7 +46,7 @@ Routes is following REST standard (Richardson level 3)
       - Logged user is not **<user_id>**
       - The **<user_id>** have no access to **<resource_id>**
 </p>
-</details>`
+</details>`,
     )
     .addBearerAuth();
 
@@ -62,6 +62,6 @@ Routes is following REST standard (Richardson level 3)
   });
 
   console.info(
-    `Documentation: http://localhost:${process.env.PORT}/documentation`
+    `Documentation: http://localhost:${process.env.PORT}/documentation`,
   );
 }

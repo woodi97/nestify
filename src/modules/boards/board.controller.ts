@@ -54,7 +54,7 @@ export class BoardController {
   @UsePipes(ValidationPipe)
   createBoard(
     @Body() createBoardDto: CreateBoardDto,
-    @GetUser() user: UserEntity
+    @GetUser() user: UserEntity,
   ): Promise<BoardEntity> {
     return this.boardService.createBoard(createBoardDto, user);
   }
@@ -64,7 +64,7 @@ export class BoardController {
   @ApiAcceptedResponse({ type: BoardEntity })
   updateBoardStatus(
     @Param('id') id: string,
-    @Body('status', BoardStatusValidationPipe) status: BoardStatus
+    @Body('status', BoardStatusValidationPipe) status: BoardStatus,
   ) {
     return this.boardService.updateBoardStatus(id, status);
   }
@@ -74,7 +74,7 @@ export class BoardController {
   @ApiAcceptedResponse()
   deleteBoard(
     @Param('id') id: string,
-    @GetUser() user: UserEntity
+    @GetUser() user: UserEntity,
   ): Promise<void> {
     return this.boardService.deleteBoard(id, user);
   }

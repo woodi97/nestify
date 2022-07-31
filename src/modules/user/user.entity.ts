@@ -2,13 +2,16 @@ import {
   BaseEntity,
   Column,
   Entity,
+  JoinColumn,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
 
 // eslint-disable-next-line import/no-cycle
 import { BoardEntity } from '../boards/board.entity';
+import { ChatroomEntity } from '../chatroom/chatroom.entity';
 
 @Entity('user')
 @Unique(['email'])
@@ -27,4 +30,8 @@ export class UserEntity extends BaseEntity {
 
   @OneToMany(() => BoardEntity, (board) => board.user, { eager: true })
   boards: BoardEntity[];
+
+  @OneToOne(() => ChatroomEntity)
+  @JoinColumn({ name: 'chatroom_id' })
+  chatroom: ChatroomEntity;
 }

@@ -1,7 +1,4 @@
 module.exports = {
-  'src/**/*.ts': [
-    'yarn lint',
-    'prettier --write',
-    'git add',
-  ],
+  'src/**/*.{js,jsx,ts,tsx}': ['yarn lint'],
+  'src/**': ['prettier --write .'],
 };

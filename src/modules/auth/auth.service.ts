@@ -10,7 +10,7 @@ import type { SignInAuthDto } from './dto/sign-in-auth-dto';
 export class AuthService {
   constructor(
     @InjectRepository(UserRepository) private userRepository: UserRepository,
-    private jwtService: JwtService
+    private jwtService: JwtService,
   ) {}
 
   async signUp(authCredentialsDto: AuthCredentialDto): Promise<void> {

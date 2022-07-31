@@ -24,7 +24,7 @@ export async function bootstrap(): Promise<NestExpressApplication> {
     new ExpressAdapter(),
     {
       cors: true,
-    }
+    },
   );
 
   app.enable('trust proxy'); // only if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
@@ -34,7 +34,7 @@ export async function bootstrap(): Promise<NestExpressApplication> {
     RateLimit({
       windowMs: 15 * 60 * 1000, // 15 minutes
       max: 100, // limit each IP to 100 requests per windowMs
-    })
+    }),
   );
   app.use(compression());
   app.use(morgan('combined'));
@@ -48,7 +48,7 @@ export async function bootstrap(): Promise<NestExpressApplication> {
       transform: true,
       dismissDefaultMessages: true,
       exceptionFactory: (errors) => new UnprocessableEntityException(errors),
-    })
+    }),
   );
 
   const configService = app.select(SharedModule).get(ApiConfigService);

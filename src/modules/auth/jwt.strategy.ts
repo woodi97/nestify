@@ -11,7 +11,7 @@ import { UserRepository } from '../user/user.repository';
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     private configService: ApiConfigService,
-    @InjectRepository(UserRepository) private userRepository: UserRepository
+    @InjectRepository(UserRepository) private userRepository: UserRepository,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

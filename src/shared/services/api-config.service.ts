@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import type { MongooseModuleOptions } from '@nestjs/mongoose';
 import type { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { isNil } from 'lodash';
 
@@ -26,6 +27,13 @@ export class ApiConfigService {
     return this.getString('NODE_ENV');
   }
 
+  get mongoConfig(): MongooseModuleOptions {
+    return {
+      uri: this.getString('MONGO_URI'),
+      dbName: this.getString('MONGO_DB_NAME'),
+    };
+  }
+
   get postgresConfig(): TypeOrmModuleOptions {
     let entities = [
       __dirname + '/../../modules/**/*.entity{.ts,.js}',
@@ -37,7 +45,7 @@ export class ApiConfigService {
       const entityContext = require.context(
         './../../modules',
         true,
-        /\.entity\.ts$/
+        /\.entity\.ts$/,
       );
       entities = entityContext.keys().map((id) => {
         const entityModule = entityContext<Record<string, unknown>>(id);
@@ -49,7 +57,7 @@ export class ApiConfigService {
       const migrationContext = require.context(
         './../../database/migrations',
         false,
-        /\.ts$/
+        /\.ts$/,
       );
 
       migrations = migrationContext.keys().map((id) => {

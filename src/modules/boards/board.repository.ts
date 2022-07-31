@@ -11,7 +11,7 @@ export class BoardRepository extends Repository<BoardEntity> {
   async getAllBoards(user: UserEntity): Promise<BoardEntity[]> {
     const query = this.createQueryBuilder('board');
 
-    query.where('board.userId = :userId', { userId: user.id });
+    query.where('board.user.id = :userId', { userId: user.id });
 
     const boards = await query.getMany();
 
@@ -30,7 +30,7 @@ export class BoardRepository extends Repository<BoardEntity> {
 
   async createBoard(
     createBoardDto: CreateBoardDto,
-    user: UserEntity
+    user: UserEntity,
   ): Promise<BoardEntity> {
     const newBoard: BoardEntity = this.create({
       ...createBoardDto,
@@ -44,7 +44,7 @@ export class BoardRepository extends Repository<BoardEntity> {
 
   async updateBoardStatus(
     id: string,
-    status: BoardStatus
+    status: BoardStatus,
   ): Promise<BoardEntity> {
     const board = await this.getBoardByID(id);
     board.status = status;

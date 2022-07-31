@@ -13,7 +13,7 @@ export class SnakeNamingStrategy
   columnName(
     propertyName: string,
     customName: string,
-    embeddedPrefixes: string[]
+    embeddedPrefixes: string[],
   ): string {
     return (
       snakeCase(embeddedPrefixes.join('_')) +
@@ -33,30 +33,30 @@ export class SnakeNamingStrategy
     firstTableName: string,
     secondTableName: string,
     firstPropertyName: string,
-    _secondPropertyName: string
+    _secondPropertyName: string,
   ): string {
     return snakeCase(
       firstTableName +
         '_' +
         firstPropertyName.replace(/\./gi, '_') +
         '_' +
-        secondTableName
+        secondTableName,
     );
   }
 
   joinTableColumnName(
     tableName: string,
     propertyName: string,
-    columnName?: string
+    columnName?: string,
   ): string {
     return snakeCase(
-      tableName + '_' + (columnName ? columnName : propertyName)
+      tableName + '_' + (columnName ? columnName : propertyName),
     );
   }
 
   classTableInheritanceParentColumnName(
     parentTableName: string,
-    parentTableIdPropertyName: string
+    parentTableIdPropertyName: string,
   ): string {
     return snakeCase(`${parentTableName}_${parentTableIdPropertyName}`);
   }

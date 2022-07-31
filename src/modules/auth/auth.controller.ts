@@ -46,7 +46,7 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   @ApiCreatedResponse()
   signUp(
-    @Body(ValidationPipe) authCredentialsDto: AuthCredentialDto
+    @Body(ValidationPipe) authCredentialsDto: AuthCredentialDto,
   ): Promise<void> {
     return this.authService.signUp(authCredentialsDto);
   }
@@ -57,7 +57,7 @@ export class AuthController {
     type: AuthResponse,
   })
   signIn(
-    @Body(ValidationPipe) signInAuthDto: SignInAuthDto
+    @Body(ValidationPipe) signInAuthDto: SignInAuthDto,
   ): Promise<{ accessToken: string }> {
     return this.authService.signIn(signInAuthDto);
   }
